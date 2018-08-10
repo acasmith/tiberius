@@ -6,10 +6,10 @@ Discord bot for querying the D&amp;D 5e SRD.
 Head 
 <a href="https://discordapp.com/api/oauth2/authorize?client_id=476693312011501569&permissions=2048&scope=bot">
 here
-</a>
-, login to discord and choose the server you want to use from the dropdown menu.
+</a>, login to discord and choose the server you want to use from the dropdown menu.
+On success, a Tiberius bot user will join your server.
 
-Note: currently there is no external hosting. To use this bot you must host it bot yourself. Please see "Running the Project" for further details.
+Note: currently there is no external hosting. To use this bot you must host the bot yourself. Please see "Running the Project" for how to self-host.
 
 ### Commands
 Please use !commands to see the full list of commands.
@@ -34,4 +34,4 @@ To run the project, enter
 node tiberius
 ```
 
-"Tiberius ready!" is logged to the console on a successful launch.
+"Tiberius ready!" will be logged to the console on a successful launch.

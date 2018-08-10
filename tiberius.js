@@ -20,7 +20,7 @@ bot.on("message", async (message) => {
 	let cmd = messageArray[0];
 	
 	if(cmd === `${prefix}hello`){
-		return message.channel.send("Greetings, mortal!");
+		return message.channel.send("Greetings, " + message.member.user.username + "!");
 	}
 	
 	if(cmd === `${prefix}info`){
@@ -81,14 +81,16 @@ bot.on("message", async (message) => {
 		const commandsEmbed = new Discord.RichEmbed()
 		.setTitle("All Commands")
 		.setColor("#f4425c")
-		.addField("!info", "Information about the bot.", true)
-		.addField("!serverinfo", "Information about this Discord server.", true)
-		.addField("!help", "If you get stuck.", true)
+		.addField("!info", "Information about the bot.")
+		.addField("!commands", "I suspect you already knew this one.")
+		.addField("!hello", "It's becoming self aware!!!")
+		.addField("!serverinfo", "Information about this Discord server.")
+		.addField("!help", "If you get stuck.")
 		.addField("!roll ", "Rolls a d20. " + 
-					"\n Can provide two optional parameters specifying the number " + 
-					"of sides and the number of dice to roll. Eg. '!roll d6 4' rolls a d6 4 times.", true)
+					"\n Takes two optional parameters specifying the number " + 
+					"of sides and the number of dice to roll. Eg. '!roll d6 4' rolls a d6 4 times.")
 		.addField("!spells someSpell", "Queries the SRD for a spell. " + 
-				"Spell names consisting of multiple words should be space separated eg. '!spells Legend Lore'", true);
+				"Spell names consisting of multiple words should be space separated eg. '!spells Legend Lore'");
 				
 		return message.channel.send(commandsEmbed);
 	}
