@@ -4,7 +4,7 @@ const bot = new Discord.Client({disableEveryone:true});
 const fetch = require("node-fetch");
 
 bot.on("ready", async () => {
-	console.log("ready!");
+	console.log("Tiberius ready!");
 });
 
 bot.on("message", async (message) => {

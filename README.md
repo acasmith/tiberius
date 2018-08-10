@@ -2,16 +2,14 @@
 Discord bot for querying the D&amp;D 5e SRD.
 
 ## Installing the bot on your server.
-#### Important: you must own the server to install a bot.
+### Important: you must own the server to install a bot.
 Head 
 <a href="https://discordapp.com/api/oauth2/authorize?client_id=476693312011501569&permissions=2048&scope=bot">
 here
 </a>
-, and enter your discord details. Choose a server from the dropdown menu and 
-proceed.
+, login to discord and choose the server you want to use from the dropdown menu.
 
-#### Note: currently there is no external hosting. To use this bot you must 
-host it bot yourself. Please see "Running the Project" for further details.
+Note: currently there is no external hosting. To use this bot you must host it bot yourself. Please see "Running the Project" for further details.
 
 ### Commands
 Please use !commands to see the full list of commands.
@@ -22,7 +20,7 @@ Open the terminal/cmd, navigate to the project directory and enter
 ```
 node -v
 ```
-If you don't see a version number, go here https://nodejs.org/ and install 
+If you don't see a version number, go <a href="https://nodejs.org/">here</a> and install 
 the latest version.
 
 Next, install the dependencies. Using the terminal, navigate to the project
