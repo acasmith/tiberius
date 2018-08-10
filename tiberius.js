@@ -92,9 +92,7 @@ bot.on("message", async (message) => {
 				
 		return message.channel.send(commandsEmbed);
 	}
-	
-	//TODO:
-	//Finish!
+
 	if(cmd === `${prefix}roll`){
 		let args = [20, 1];
 		let response = "I can't roll that!";
@@ -152,6 +150,8 @@ bot.on("message", async (message) => {
 		
 });
 
+//Utility functions
+
 function capitaliseStrings(stringArr){
 	for(let i = 0; i < stringArr.length; i++){
 		stringArr[i] = stringArr[i].charAt(0).toUpperCase() + stringArr[i].slice(1).toLowerCase();
@@ -202,19 +202,6 @@ function makeRequest(url, message, callback){
 }
 
 function shortSpellFormat(spellData, url){
-	//Include name
-	//Ignore desc (array)
-	//ignore phb page
-	//Include range
-	//include components (array)
-	//include material
-	//include ritual
-	//Include duraiton
-	//include concentration
-	//include level
-	//Include school
-	//ignore classes
-	//Ignore subclasses
 	const schoolColor = {
 		"Abjuration": "#F1EC95",
 		"Conjuration": "#A0D7F3",
