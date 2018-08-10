@@ -16,7 +16,7 @@ Please use !commands to see the full list of commands.
 
 ## Running the Project
 To run the project locally, you must first have node.js installed.
-Open the terminal/cmd, navigate to the project directory and enter
+Open the terminal/cmd, navigate to the project directory and enter:
 ```
 node -v
 ```
@@ -24,12 +24,12 @@ If you don't see a version number, go <a href="https://nodejs.org/">here</a> and
 the latest version.
 
 Next, install the dependencies. Using the terminal, navigate to the project
-directory enter
+directory and enter:
 ```
 npm install
 ```
 
-To run the project, enter
+To run the project, enter:
 ```
 node tiberius
 ```

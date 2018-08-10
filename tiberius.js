@@ -37,6 +37,9 @@ bot.on("message", async (message) => {
 		
 		const commands = "Use !commands for the full list of commands.";
 		
+		const bugs = "If you find a bug or have a feature request, please " +
+		"visit https://github.com/acasmith/tiberius"
+		
 		const botIcon = bot.user.displayAvatarURL;
 		let botembed = new Discord.RichEmbed()
 		.setColor("#f4425c")
@@ -44,6 +47,7 @@ bot.on("message", async (message) => {
 		.addField("Tiberius says:", blurb)
 		.addField("Restrictions: ", restrictions)
 		.addField("Acknowledgements: ", thanks)
+		.addField("Help:", bugs)
 		.addField("Hint: ", commands);
 		return message.channel.send(botembed);
 	}
