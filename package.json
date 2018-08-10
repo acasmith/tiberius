@@ -1,0 +1,15 @@
+{
+  "name": "tiberiusbot",
+  "version": "1.0.0",
+  "description": "Discord bot for querying http://dnd5eapi.co",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Fin",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^11.3.2",
+    "node-fetch": "^2.2.0"
+  }
+}
