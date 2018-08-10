@@ -155,8 +155,21 @@ bot.on("message", async (message) => {
 //Utility functions
 
 function capitaliseStrings(stringArr){
+	const connectives = ["of", "Of", "OF", "and", "And", "AND", "with", "With", "WITH", "or", "Or", "OR", "the", "The", "THE", "to", "To", "TO", "into", "Into", "INTO", "without", "Without", "WITHOUT", "from", "From", "FROM", "via", "Via", "VIA"];
 	for(let i = 0; i < stringArr.length; i++){
-		stringArr[i] = stringArr[i].charAt(0).toUpperCase() + stringArr[i].slice(1).toLowerCase();
+		//Catches duo spells eg. "Antipathy/Sympathy"
+		if(stringArr[i].includes('/')){
+			const slashIndex = stringArr[i].indexOf('/');
+			const firstWord = stringArr[i].charAt(0).toUpperCase() + stringArr[i].slice(1, slashIndex + 1);
+			const secondWord = stringArr[i].charAt(slashIndex + 1).toUpperCase() + stringArr[i].slice(slashIndex + 2);
+			stringArr[i] = firstWord + secondWord;
+		}
+		//Catches connectives
+		else if(!connectives.includes(stringArr[i])){
+			stringArr[i] = stringArr[i].charAt(0).toUpperCase() + stringArr[i].slice(1).toLowerCase();
+		} else{
+			stringArr[i] = stringArr[i].toLowerCase();
+		}
 	}
 }
 
