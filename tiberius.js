@@ -12,8 +12,8 @@ bot.on("ready", async () => {
 bot.on("message", async (message) => {
 	if(message.author.bot){
 		if(message.author.username === "TibbyBeta" && message.content === "NATURAL 20!"){
-			//message.react(bot.emojis.find("name", "tada").toString());
-			console.log(bot.emojis.get("305818615712579584"));
+			console.log("🎉");
+			message.react("🎉");
 		};
 		return;
 	} 
@@ -146,11 +146,10 @@ bot.on("message", async (message) => {
 				args[1] = Number(messageArray.length > 2 ? messageArray[2] : 1);
 			} else{
 				args[1] = Number(messageArray[1]);
-				console.log(args);
 			}
 			
 		}
-		const reducer = (accumulator, element) => accumulator && typeof element === "number" && !isNaN(element);
+		const reducer = (accumulator, element) => accumulator && !isNaN(element) && typeof element === "number";
 				
 		if(args.reduce(reducer, true)){
 			response = "";
@@ -159,7 +158,6 @@ bot.on("message", async (message) => {
 			let lowest = args[0];
 			for(let i = 0; i < args[1]; i++){
 				let random = Math.floor(Math.random() * args[0]) + 1;
-				random = 20;
 				total += random;
 				highest = highest > random ? highest : random;
 				lowest = lowest < random ? lowest : random;
