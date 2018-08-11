@@ -3,20 +3,24 @@ Discord bot for querying the D&amp;D 5e SRD.
 
 ## Installing the bot on your server.
 ### Important: you must own the server to install a bot.
-Head 
-<a href="https://discordapp.com/api/oauth2/authorize?client_id=476693312011501569&permissions=2048&scope=bot">
-here
-</a>, login to discord and choose the server you want to use from the dropdown menu.
-On success, a Tiberius bot user will join your server.
+Currently, there is no external hosting. To use this bot you must host the bot 
+yourself using the following steps. 
 
-Note: currently there is no external hosting. To use this bot you must host the bot yourself. Please see "Running the Project" for how to self-host.
+## Registering a discord application:
+First, head <a href="https://discordapp.com/developers">here</a>, 
+and create a new application and a bot user for that application. Notice the 
+bot has a token value, we'll use that later.
 
-### Commands
-Please use !commands to see the full list of commands.
+Next, head to the OAuth2 section of the application dashboard. In the 'Scopes' 
+panel select the 'bot' scope and in the 'Permissions' panel select 'Send 
+Messages'. Copy the URL this generates, navigate to that address and select 
+the server you want the bot to join.
+
+On success, a bot user will join your server.
 
 ## Running the Project
 To run the project locally, you must first have node.js installed.
-Open the terminal/cmd, navigate to the project directory and enter:
+Open the terminal/cmd and enter:
 ```
 node -v
 ```
@@ -29,9 +33,16 @@ directory and enter:
 npm install
 ```
 
+Now we need your bot's token. Copy the token from the developer dashboard, and 
+open botconfig.json from the project files. Set the value of "token" to your 
+bots token. Make sure to wrap the value in "" quotes.
+
 To run the project, enter:
 ```
 node tiberius
 ```
 
 "Tiberius ready!" will be logged to the console on a successful launch.
+
+### Commands
+Please use !commands to see the full list of commands.
