@@ -3,6 +3,7 @@ const Discord = require("discord.js");
 const fetch = require("node-fetch");
 const guildPrefixLookup = {};	//Load in from DB on launch/write to DB before logout.
 const bot = new Discord.Client({disableEveryone:true});
+const tibbyRed = "#f4425c";
 
 bot.on("ready", async () => {
 	console.log("Tiberius ready!");
@@ -10,18 +11,22 @@ bot.on("ready", async () => {
 
 bot.on("message", async (message) => {
 	if(message.author.bot){
+		if(message.author.username === "TibbyBeta" && message.content === "NATURAL 20!"){
+			//message.react(bot.emojis.find("name", "tada").toString());
+			console.log(bot.emojis.get("305818615712579584"));
+		};
 		return;
 	} 
 	if(message.channel.type === "dm"){
 		return;
 	}
 	
+	const userHandle = message.member.nickname || message.member.user.username;
 	let prefix = guildPrefixLookup[message.channel.guild.id] || botConfig.prefix;
 	let messageArray = message.content.split(" ");
 	let cmd = messageArray[0];
 	
 	if(cmd === `${prefix}hello`){
-		const userHandle = message.member.nickname || message.member.user.username;
 		return message.channel.send("Greetings, " + userHandle + "!");
 	}
 	
@@ -96,11 +101,10 @@ bot.on("message", async (message) => {
 	}
 	
 	if(cmd === `${prefix}serverinfo`){
-		const userHandle = message.member.nickname || message.member.user.username;
 		const serverIcon = message.guild.iconURL;
 		const serverEmbed = new Discord.RichEmbed()
 		.setTitle(message.guild.name)
-		.setColor("#f4425c")
+		.setColor(tibbyRed)
 		.setThumbnail(serverIcon)
 		.addField("Created On", message.guild.createdAt, true)
 		.addField(userHandle + " Joined On: ", message.member.joinedAt, true)
@@ -140,6 +144,9 @@ bot.on("message", async (message) => {
 			if(messageArray[1].charAt(0) === 'd' || messageArray[1].charAt(0) === 'D'){
 				args[0] = Number(messageArray[1].slice(1));
 				args[1] = Number(messageArray.length > 2 ? messageArray[2] : 1);
+			} else{
+				args[1] = Number(messageArray[1]);
+				console.log(args);
 			}
 			
 		}
@@ -148,23 +155,30 @@ bot.on("message", async (message) => {
 		if(args.reduce(reducer, true)){
 			response = "";
 			let total = 0;
+			let highest = 0;
+			let lowest = args[0];
 			for(let i = 0; i < args[1]; i++){
 				let random = Math.floor(Math.random() * args[0]) + 1;
+				random = 20;
 				total += random;
-				response += (random === 20 && args[0] === 20) ? "NATURAL " + random + "!" : random;
+				highest = highest > random ? highest : random;
+				lowest = lowest < random ? lowest : random;
+				response += (random === 20 && args[0] === 20) ? "NATURAL " + random + "!" : random;	//Get bot to set a reaction to the 20 if it's a single throw.
 				response += (i === args[1] - 1) ? "" : ", ";
 			}
 			if(args[1] > 1){
-				response += "\nTotal: " + total + "\n";
-				response += "Average (rounded down): " + Math.floor(total / args[1]);
+				const rolled = response;
+				response = new Discord.RichEmbed()
+					.setTitle(userHandle + " rolls " + args[1] + "d" + args[0] + "'s!")
+					.setColor(tibbyRed)
+					.addField("Rolled: ", rolled, true)
+					.addField("Total: ", total, true)
+					.addField("Highest: ", highest, true)
+					.addField("Lowest: ", lowest, true)
+					.addField("Average (rounded down): ", Math.floor(total / args[1]), true);
 			}
 		}
-		
-		
 		return message.channel.send(response);
-		
-		
-		
 	}
 	
 	if(cmd === `${prefix}spells`){
