@@ -20,7 +20,13 @@ bot.on("message", async (message) => {
 	let cmd = messageArray[0];
 	
 	if(cmd === `${prefix}hello`){
-		return message.channel.send("Greetings, " + message.member.user.username + "!");
+		console.log(message.member.nickname);
+		const userHandle = message.member.nickname || message.member.user.username;
+		return message.channel.send("Greetings, " + userHandle + "!");
+	}
+	
+	if(cmd === `${prefix}prefix`){
+		
 	}
 	
 	if(cmd === `${prefix}info`){
@@ -68,13 +74,14 @@ bot.on("message", async (message) => {
 	}
 	
 	if(cmd === `${prefix}serverinfo`){
+		const userHandle = message.member.nickname || message.member.user.username;
 		const serverIcon = message.guild.iconURL;
 		const serverEmbed = new Discord.RichEmbed()
 		.setTitle(message.guild.name)
 		.setColor("#f4425c")
 		.setThumbnail(serverIcon)
 		.addField("Created On", message.guild.createdAt, true)
-		.addField(message.member.user.username + " Joined On: ", message.member.joinedAt, true)
+		.addField(userHandle + " Joined On: ", message.member.joinedAt, true)
 		.addField("Total Members", message.guild.memberCount, true);
 		return message.channel.send(serverEmbed);
 		
