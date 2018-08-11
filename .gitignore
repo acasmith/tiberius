@@ -71,3 +71,6 @@ typings/
 
 # Serverless directories
 .serverless
+
+#Client config file
+botconfig.json
