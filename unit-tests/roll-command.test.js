@@ -100,6 +100,18 @@ test("Two modifier params", () => {
 	expect(rollCommand.idParams(["+7", "-3"])).toEqual([20, 1, NaN]);
 });
 
+test("Space separated modifier", () => {
+	expect(rollCommand.idParams(["-" , "17"])).toEqual([20, 1, -17]);
+});
+
+test("Modifier symbol but no integer", () => {
+	expect(rollCommand.idParams(["-"])).toEqual([20, 1, NaN]);
+});
+
+test("Two Space separated modifier", () => {
+	expect(rollCommand.idParams(["+", "7", "-" , "3"])).toEqual([20, 1, NaN]);
+});
+
 test("Quantity and dice type", () => {
 	expect(rollCommand.idParams(["9", "d5"])).toEqual([5, 9, 0]);
 });
@@ -132,7 +144,3 @@ test("Random nonsense params 0", () => {
 	expect(rollCommand.idParams(["abc", "$ff", "d6"])).toEqual([6, NaN, 0]);
 });
 //*********End idParams() tests ***************************
-
-//roll() not tested because it's essentially testing Math.random()
-
-//Format not tested because.

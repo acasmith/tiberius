@@ -138,7 +138,7 @@ bot.on("message", async (message) => {
 	}
 
 	if(cmd === `${prefix}roll`){
-		return rollCommand.roll(message, messageArray);
+		return message.channel.send(rollCommand.roll(message, messageArray));
 	}
 	
 	if(cmd === `${prefix}spells`){

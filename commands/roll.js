@@ -1,7 +1,4 @@
-/*
-	Split into: getParams, assignParams, getNumber, formatResponse.
-	Let main script send response.
-*/
+const Discord = require("discord.js");
 
 function getParams(messageArray){
 	const params = [];
@@ -34,6 +31,10 @@ function idParams(messageParams){
 		if(param.charAt(0) === 'd' || param.charAt(0) === 'D'){
 			rollParams[0] = rollParams[0] === undefined ? Number(param.slice(1)) : NaN;
 		} else if(param.charAt(0) === '+' || param.charAt(0) === '-'){
+			if(param === '+' || param === '-' && (i + 1 < messageParams.length)){
+				param += messageParams[i+1];
+				i += 1;
+			}
 			rollParams[2] = rollParams[2] === undefined ? Number(param) : NaN;
 		} else{
 			rollParams[1] = rollParams[1] === undefined ? Number(param) : NaN;
@@ -44,59 +45,70 @@ function idParams(messageParams){
 		if(rollParams[i] === undefined){
 			rollParams[i] = defaults[i];
 		}
-	}
 	return rollParams;
 }
 
-function formatResponse(values){
+function formatResponse(values, rollArgs){
+	let response = "I can't roll that!";
 	
+	if(values.rolled){
+		if(values.rolled.length < 2){
+			response  = values[0] === 20 ? "NATURAL 20!" : values.rolled[0];
+		}
+		else{
+			const rolled = values.rolled.reduce((acc, element) => (acc + ", " + element));
+			let titleString = values.userHandle + " rolls " + rollArgs[1];
+			titleString += "d" + rollArgs[0];
+			let titleMod = "'s";
+			if(rollArgs[2] > 0){
+				titleMod = " +" + rollArgs[2];
+			} else if(rollArgs[2] < 0){
+				titleMod = " " + rollArgs[2];
+			}
+			titleString += titleMod + "!";
+			response = new Discord.RichEmbed()
+					.setTitle(titleString)
+					.setColor("#f4425c")
+					.addField("Rolled: ", rolled, true)
+					.addField("Total: ", values.total, true)
+					.addField("Highest: ", values.highest, true)
+					.addField("Lowest: ", values.lowest, true)
+					.addField("Average (rounded down): ", values.average, true);
+		}
+	}
+	
+	return response;
 }
-
 
 
 function roll(message, messageArray){
 	let rollArgs;	//Number of faces, number of dice, modifier.
-	let response = "I can't roll that!";
 	let messageParams = [];
-	
+	const rolled = [];
+	const values = {};
+	const reducer = (accumulator, element) => accumulator && !isNaN(element) && typeof element === "number";
 	
 	if(messageArray.length > 1){
 		messageParams = getParams(messageArray);
 	}
-	
 	rollArgs = idParams(messageParams);
-	console.log(rollArgs);
 	
-	const reducer = (accumulator, element) => accumulator && !isNaN(element) && typeof element === "number";
-			
-	/*if(rollArgs.reduce(reducer, true)){
-		response = "";
-		let total = 0;
-		let highest = 0;
-		let lowest = rollArgs[0];
+	if(rollArgs.reduce(reducer, true)){
 		for(let i = 0; i < rollArgs[1]; i++){
-			let random = Math.floor(Math.random() * rollArgs[0]) + 1;
-			total += random;
-			highest = highest > random ? highest : random;
-			lowest = lowest < random ? lowest : random;
-			response += (random === 20 && rollArgs[0] === 20) ? "NATURAL " + random + "!" : random;	//Get bot to set a reaction to the 20 if it's a single throw.
-			response += (i === rollArgs[1] - 1) ? "" : ", ";
+			rolled.push(Math.floor(Math.random() * rollArgs[0]) + 1);
 		}
-		if(rollArgs[1] > 1){
-			const rolled = response;
-			response = new Discord.RichEmbed()
-				.setTitle(userHandle + " rolls " + rollArgs[1] + "d" + rollArgs[0] + "'s!")
-				.setColor(tibbyRed)
-				.addField("Rolled: ", rolled, true)
-				.addField("Total: ", total, true)
-				.addField("Highest: ", highest, true)
-				.addField("Lowest: ", lowest, true)
-				.addField("Average (rounded down): ", Math.floor(total / rollArgs[1]), true);
-		}
+		
+		values.rolled = rolled;
+		values.total = rolled.reduce((acc, element) => (acc + element)) + rollArgs[2];
+		values.highest = Math.max.apply(Math, rolled);
+		values.lowest = Math.min.apply(Math, rolled);
+		values.average = Math.floor(values.total / rolled.length);
+		values.userHandle = message.member.nickname || message.member.user.username;
 	}
-	return message.channel.send(response);*/
+	
+	return formatResponse(values, rollArgs, Discord);
 }
 
-module.exports.getParams = getParams;
-module.exports.idParams = idParams;
+module.exports.getParams = getParams;	//Exponsed for testing
+module.exports.idParams = idParams;		//Exposed for testing
 module.exports.roll = roll;
