@@ -1,27 +1,6 @@
-const rollCommand = require("../roll");
-let args = [];
-let expected = [];
-let result;
+const rollCommand = require("../commands/roll");
 
-function equals(array1, array2){
-	let equals = true;
-	
-	equals = array1.length === array2.length;
-	for(x in array1){
-		if(equals){
-			equals = array1[x] === array2[x]; 
-		} else{
-			break;
-		}
-	}
-	return equals;
-}
-
-
-/*if(!equals(result, expected)){
-	throw new Error("Test fail: No parameters returned non-empty array. Expected: " + expected + ", got: " + result + ".");
-}*/
-
+//********getParams() Tests **************************
 test("No params", () => {
 	expect(rollCommand.getParams(["!roll"])).toEqual([]);
 });
@@ -38,73 +17,122 @@ test("Only dice type (capitalised)", () => {
 	expect(rollCommand.getParams(["!roll", "D6"])).toEqual(["D6"]);
 });
 
-args = ["!roll", "+7"];
-expected = ["+7"];
-result = rollCommand.getParams(args);
-if(!equals(result, expected)){
-	throw new Error("Test fail: Returned wrong parameters. Expected: " + expected + ", got: " + result + ".");
-}
-
 test("Only modifier (+ve)", () => {
-	expect(rollCommand.getParams(["!roll", "D6"])).toEqual(["D6"]);
+	expect(rollCommand.getParams(["!roll", "+7"])).toEqual(["+7"]);
 });
 
-args = ["!roll", "-3"];
-expected = ["-3"];
-result = rollCommand.getParams(args);
-if(!equals(result, expected)){
-	throw new Error("Test fail: Returned wrong parameters. Expected: " + expected + ", got: " + result + ".");
-}
+test("Only modifier (-ve)", () => {
+	expect(rollCommand.getParams(["!roll", "-3"])).toEqual(["-3"]);
+});
 
-args = ["!roll", "5d9"];
-expected = ["5", "d9"];
-result = rollCommand.getParams(args);
-if(!equals(result, expected)){
-	throw new Error("Test fail: Returned wrong parameters. Expected: " + expected + ", got: " + result + ".");
-}
+test("Quantity and dice type", () => {
+	expect(rollCommand.getParams(["!roll", "5d9"])).toEqual(["5", "d9"]);
+});
 
-args = ["!roll", "5D9"];
-expected = ["5", "D9"];
-result = rollCommand.getParams(args);
-if(!equals(result, expected)){
-	throw new Error("Test fail: Returned wrong parameters. Expected: " + expected + ", got: " + result + ".");
-}
+test("Quantity and dice type (capitalised)", () => {
+	expect(rollCommand.getParams(["!roll", "5D9"])).toEqual(["5", "D9"]);
+});
 
-args = ["!roll", "4", "+7"];
-expected = ["4", "+7"];
-result = rollCommand.getParams(args);
-if(!equals(result, expected)){
-	throw new Error("Test fail: Returned wrong parameters. Expected: " + expected + ", got: " + result + ".");
-}
+test("Quantity and modifier (+ve)", () => {
+	expect(rollCommand.getParams(["!roll", "4", "+7"])).toEqual(["4", "+7"]);
+});
 
-args = ["!roll", "4", "-7"];
-expected = ["4", "-7"];
-result = rollCommand.getParams(args);
-if(!equals(result, expected)){
-	throw new Error("Test fail: Returned wrong parameters. Expected: " + expected + ", got: " + result + ".");
-}
+test("Quantity and modifier (-ve)", () => {
+	expect(rollCommand.getParams(["!roll", "4", "-7"])).toEqual(["4", "-7"]);
+});
 
-args = ["!roll", "d4", "+37"];
-expected = ["d4", "+37"];
-result = rollCommand.getParams(args);
-if(!equals(result, expected)){
-	throw new Error("Test fail: Returned wrong parameters. Expected: " + expected + ", got: " + result + ".");
-}
+test("Dice type and modifier (+ve)", () => {
+	expect(rollCommand.getParams(["!roll", "d4", "+37"])).toEqual(["d4", "+37"]);
+});
 
-args = ["!roll", "d4", "-37"];
-expected = ["d4", "-37"];
-result = rollCommand.getParams(args);
-if(!equals(result, expected)){
-	throw new Error("Test fail: Returned wrong parameters. Expected: " + expected + ", got: " + result + ".");
-}
+test("Dice type and modifier (-ve)", () => {
+	expect(rollCommand.getParams(["!roll", "d4", "-37"])).toEqual(["d4", "-37"]);
+});
 
-args = ["!roll", "4d4", "+37"];
-expected = ["4", "d4", "+37"];
-result = rollCommand.getParams(args);
-if(!equals(result, expected)){
-	throw new Error("Test fail: Returned wrong parameters. Expected: " + expected + ", got: " + result + ".");
-}
+test("Quantity, dice type and modifier", () => {
+	expect(rollCommand.getParams(["!roll", "4d4", "+37"])).toEqual(["4", "d4", "+37"]);
+});
 
+test("Random nonsense parameters 0", () => {
+	expect(rollCommand.getParams(["!roll", "abc", "12"])).toEqual(["abc", "12"]);
+});
 
+test("Random nonsense parameters 1", () => {
+	expect(rollCommand.getParams(["!roll", "abc", "$ffd6"])).toEqual(["abc", "$ff", "d6"]);
+});
 
-console.log("All tests passed!");
+//*************End getParams() tests **********************
+
+//************idParams() tests ****************************
+test("No params", () => {
+	expect(rollCommand.idParams([])).toEqual([20, 1, 0]);
+});
+
+test("Quantity param only", () => {
+	expect(rollCommand.idParams(["4"])).toEqual([20, 4, 0]);
+});
+
+test("Two quantity params", () => {
+	expect(rollCommand.idParams(["4", "17"])).toEqual([20, NaN, 0]);
+});
+
+test("Dice type param only", () => {
+	expect(rollCommand.idParams(["d6"])).toEqual([6, 1, 0]);
+});
+
+test("Dice type param only (capitalised)", () => {
+	expect(rollCommand.idParams(["D6"])).toEqual([6, 1, 0]);
+});
+
+test("Two dice type params", () => {
+	expect(rollCommand.idParams(["d6", "d20"])).toEqual([NaN, 1, 0]);
+});
+
+test("Modifier param only (+ve)", () => {
+	expect(rollCommand.idParams(["+7"])).toEqual([20, 1, 7]);
+});
+
+test("Modifier param only (-ve)", () => {
+	expect(rollCommand.idParams(["-7"])).toEqual([20, 1, -7]);
+});
+
+test("Two modifier params", () => {
+	expect(rollCommand.idParams(["+7", "-3"])).toEqual([20, 1, NaN]);
+});
+
+test("Quantity and dice type", () => {
+	expect(rollCommand.idParams(["9", "d5"])).toEqual([5, 9, 0]);
+});
+
+test("Quantity and dice type (capitalised)", () => {
+	expect(rollCommand.idParams(["9", "D5"])).toEqual([5, 9, 0]);
+});
+
+test("Quantity and modifier (+ve)", () => {
+	expect(rollCommand.idParams(["6", "+7"])).toEqual([20, 6, 7]);
+});
+
+test("Quantity and modifier (-ve)", () => {
+	expect(rollCommand.idParams(["6", "-7"])).toEqual([20, 6, -7]);
+});
+
+test("Dice type and modifier (+ve)", () => {
+	expect(rollCommand.idParams(["d6", "+7"])).toEqual([6, 1, +7]);
+});
+
+test("Dice type and modifier (-ve)", () => {
+	expect(rollCommand.idParams(["d6", "-7"])).toEqual([6, 1, -7]);
+});
+
+test("Quantity, dice type and modifier", () => {
+	expect(rollCommand.idParams(["4", "d6", "-7"])).toEqual([6, 4, -7]);
+});
+
+test("Random nonsense params 0", () => {
+	expect(rollCommand.idParams(["abc", "$ff", "d6"])).toEqual([6, NaN, 0]);
+});
+//*********End idParams() tests ***************************
+
+//roll() not tested because it's essentially testing Math.random()
+
+//Format not tested because.

@@ -4,7 +4,7 @@ const fetch = require("node-fetch");
 const guildPrefixLookup = {};	//Load in from DB on launch/write to DB before logout.
 const bot = new Discord.Client({disableEveryone:true});
 const tibbyRed = "#f4425c";
-const rollCommand = require("./roll.js");
+const rollCommand = require("./commands/roll.js");
 
 bot.on("ready", async () => {
 	console.log("Tiberius ready!");
@@ -138,66 +138,6 @@ bot.on("message", async (message) => {
 	}
 
 	if(cmd === `${prefix}roll`){
-		/*let args = [20, 1, 0];	//Number of faces, number of dice, modifier.
-		let response = "I can't roll that!";
-		
-		
-		if(messageArray.length > 1){
-			
-			let params = [];
-			for(let i = 1; i < messageArray.length; i++){
-				//for each arg, check if it has a d in it. If so, split on the d.
-				const indexOfD = messageArray[i].indexOf('d');
-				
-				if(indexOfD > 0){
-					params.push(messageArray[i].slice(0, indexOfD));
-					params.push(messageArray[i].slice(indexOfD));
-				} else{
-					params.push(messageArray[i]);
-				}
-			}
-			console.log(params);
-		}*/
-		
-		/*if(messageArray.length > 1){
-			if(messageArray[1].charAt(0) === 'd' || messageArray[1].charAt(0) === 'D'){
-				args[0] = Number(messageArray[1].slice(1));
-				args[1] = Number(messageArray.length > 2 ? messageArray[2] : 1);
-			} else{
-				args[1] = Number(messageArray[1]);
-			}
-			
-		}*/
-		
-		
-		/*const reducer = (accumulator, element) => accumulator && !isNaN(element) && typeof element === "number";
-				
-		if(args.reduce(reducer, true)){
-			response = "";
-			let total = 0;
-			let highest = 0;
-			let lowest = args[0];
-			for(let i = 0; i < args[1]; i++){
-				let random = Math.floor(Math.random() * args[0]) + 1;
-				total += random;
-				highest = highest > random ? highest : random;
-				lowest = lowest < random ? lowest : random;
-				response += (random === 20 && args[0] === 20) ? "NATURAL " + random + "!" : random;	//Get bot to set a reaction to the 20 if it's a single throw.
-				response += (i === args[1] - 1) ? "" : ", ";
-			}
-			if(args[1] > 1){
-				const rolled = response;
-				response = new Discord.RichEmbed()
-					.setTitle(userHandle + " rolls " + args[1] + "d" + args[0] + "'s!")
-					.setColor(tibbyRed)
-					.addField("Rolled: ", rolled, true)
-					.addField("Total: ", total, true)
-					.addField("Highest: ", highest, true)
-					.addField("Lowest: ", lowest, true)
-					.addField("Average (rounded down): ", Math.floor(total / args[1]), true);
-			}
-		}
-		return message.channel.send(response);*/
 		return rollCommand.roll(message, messageArray);
 	}
 	

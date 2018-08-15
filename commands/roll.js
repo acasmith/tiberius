@@ -6,7 +6,6 @@
 function getParams(messageArray){
 	const params = [];
 	for(let i = 1; i < messageArray.length; i++){
-		//for each arg, check if it has a d in it. If so, split on the d.
 		let indexOfD = messageArray[i].indexOf('d');
 		indexOfD = indexOfD === -1 ? messageArray[i].indexOf('D') : indexOfD;
 		
@@ -17,52 +16,60 @@ function getParams(messageArray){
 			params.push(messageArray[i]);
 		}
 	}
-	console.log(params);
 	return params;
 }
 
-function idParams(messageParams, rollParams){
+
+function idParams(messageParams){
+	const defaults = [20, 1, 0];
+	let rollParams = [undefined, undefined, undefined];
+	let param;
+	
+	if(!messageParams || messageParams.length < 1){
+		return defaults;
+	}
+	
 	for(let i = 0; i < messageParams.length; i++){
-		const param = messageParams[i];
-		if(param.charAt(0) === 'd'){
-			rollParams[0] = Number(param.split(1));
-		} else if(param.charAt(0) === '+' ||
-					param.charAt(0) === '-'){
-			rollParams[2] = Number(param);
+		param = messageParams[i];
+		if(param.charAt(0) === 'd' || param.charAt(0) === 'D'){
+			rollParams[0] = rollParams[0] === undefined ? Number(param.slice(1)) : NaN;
+		} else if(param.charAt(0) === '+' || param.charAt(0) === '-'){
+			rollParams[2] = rollParams[2] === undefined ? Number(param) : NaN;
 		} else{
-			rollParams[1] = Number(param);
+			rollParams[1] = rollParams[1] === undefined ? Number(param) : NaN;
 		}
 	}
-	console.log(rollParams);
+	
+	for(let i = 0; i < rollParams.length; i++){
+		if(rollParams[i] === undefined){
+			rollParams[i] = defaults[i];
+		}
+	}
+	return rollParams;
+}
+
+function formatResponse(values){
+	
 }
 
 
 
 function roll(message, messageArray){
-	let rollArgs = [20, 1, 0];	//Number of faces, number of dice, modifier.
+	let rollArgs;	//Number of faces, number of dice, modifier.
 	let response = "I can't roll that!";
 	let messageParams = [];
 	
 	
 	if(messageArray.length > 1){
 		messageParams = getParams(messageArray);
-		idParams(messageParams, rollArgs);
 	}
 	
-	/*if(messageArray.length > 1){
-		if(messageArray[1].charAt(0) === 'd' || messageArray[1].charAt(0) === 'D'){
-			rollArgs[0] = Number(messageArray[1].slice(1));
-			rollArgs[1] = Number(messageArray.length > 2 ? messageArray[2] : 1);
-		} else{
-			rollArgs[1] = Number(messageArray[1]);
-		}
-		
-	}*/
-	
+	rollArgs = idParams(messageParams);
+	console.log(rollArgs);
 	
 	const reducer = (accumulator, element) => accumulator && !isNaN(element) && typeof element === "number";
 			
-	if(rollArgs.reduce(reducer, true)){
+	/*if(rollArgs.reduce(reducer, true)){
 		response = "";
 		let total = 0;
 		let highest = 0;
@@ -87,7 +94,7 @@ function roll(message, messageArray){
 				.addField("Average (rounded down): ", Math.floor(total / rollArgs[1]), true);
 		}
 	}
-	return message.channel.send(response);
+	return message.channel.send(response);*/
 }
 
 module.exports.getParams = getParams;
