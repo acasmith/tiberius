@@ -45,6 +45,7 @@ function idParams(messageParams){
 		if(rollParams[i] === undefined){
 			rollParams[i] = defaults[i];
 		}
+	}
 	return rollParams;
 }
 
