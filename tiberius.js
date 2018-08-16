@@ -119,7 +119,7 @@ bot.on("message", async (message) => {
 					"the prefix to default.");
 				
 		return message.channel.send(commandsEmbed);*/
-		return message.channel.send(commandsCommand());
+		return message.channel.send(commandsCommand(messageArray));
 	}
 
 	if(cmd === `${prefix}roll`){
