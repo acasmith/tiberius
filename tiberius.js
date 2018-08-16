@@ -1,10 +1,10 @@
 const botConfig = require("./botconfig.json");
 const Discord = require("discord.js");
 const fetch = require("node-fetch");
-const guildPrefixLookup = {};	//Load in from DB on launch/write to DB before logout.
 const bot = new Discord.Client({disableEveryone:true});
 const tibbyRed = "#f4425c";
 const rollCommand = require("./commands/roll.js");
+const prefixCommand = require("./commands/prefix");
 
 bot.on("ready", async () => {
 	console.log("Tiberius ready!");
@@ -23,7 +23,7 @@ bot.on("message", async (message) => {
 	}
 	
 	const userHandle = message.member.nickname || message.member.user.username;
-	let prefix = guildPrefixLookup[message.channel.guild.id] || botConfig.prefix;
+	let prefix = botConfig.prefix;
 	let messageArray = message.content.split(" ");
 	let cmd = messageArray[0];
 	
@@ -33,28 +33,7 @@ bot.on("message", async (message) => {
 	
 	//Prefixes can only be changed by server owner.
 	if(cmd === `${prefix}prefix`){
-		let response = "Please include a valid prefix with the command.";
-		const guildID = message.channel.guild.id;
-		const invalidPrefixes = /\w/;
-		
-		if(messageArray.length > 1){
-			if(messageArray[1] === "restrictions"){
-				response = "Prefixes can only be changed by server owners. " +
-							"Please limit your prefix to any non-alphanumeric character. Eg. !, /, %";
-			} else if(message.author.id === message.guild.owner.id){
-				if(messageArray[1] === "reset"){
-					//Using more costly delete rather than setting to null to save space.
-					delete guildPrefixLookup[guildID];
-					response = "Prefix changed to " + botConfig.prefix;
-				} else if(messageArray[1].length === 1 && !messageArray[1].match(invalidPrefixes)){
-						guildPrefixLookup[guildID] = messageArray[1];
-						response = "Prefix changed to " + guildPrefixLookup[guildID];
-					}
-			} else{
-				response = "Only the server owner can change the prefix.";
-			}
-		}
-		return message.channel.send(response);
+		return message.channel.send(prefixCommand(message, messageArray));
 	}
 	
 	if(cmd === `${prefix}info`){
