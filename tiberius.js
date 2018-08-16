@@ -5,6 +5,7 @@ const bot = new Discord.Client({disableEveryone:true});
 const tibbyRed = "#f4425c";
 const rollCommand = require("./commands/roll.js");
 const prefixCommand = require("./commands/prefix");
+const commandsCommand = require("./commands/commands");
 
 bot.on("ready", async () => {
 	console.log("Tiberius ready!");
@@ -12,8 +13,7 @@ bot.on("ready", async () => {
 
 bot.on("message", async (message) => {
 	if(message.author.bot){
-		if(message.author.username === "TibbyBeta" && message.content === "NATURAL 20!"){
-			console.log("🎉");
+		if(message.author.username === "TibbyBeta" && message.content.includes("NATURAL 20!")){
 			message.react("🎉");
 		};
 		return;
@@ -95,7 +95,7 @@ bot.on("message", async (message) => {
 	
 	if(cmd === `${prefix}commands`){
 		
-		const commandsEmbed = new Discord.RichEmbed()
+		/*const commandsEmbed = new Discord.RichEmbed()
 		.setTitle("All Commands")
 		.setColor("#f4425c")
 		.addField("!info", "Information about the bot.")
@@ -104,8 +104,13 @@ bot.on("message", async (message) => {
 		.addField("!serverinfo", "Information about this Discord server.")
 		.addField("!help", "If you get stuck.")
 		.addField("!roll ", "Rolls a d20. " + 
-					"\n Takes two optional parameters specifying the number " + 
-					"of sides and the number of dice to roll. Eg. '!roll d6 4' rolls a d6 4 times.")
+					"\n Takes up to 3 additional parameters specifying the number " + 
+					"of sides, the number of times to roll and a flat modifier. " + 
+					"\n Examples:" + 
+					"\n'!roll 4' rolls 4 d20's. " + 
+					"\n'!roll d6' rolls a six sided dice. " + 
+					"\n'!roll +7' rolls a d20 and adds +7 to the result." + 
+					"\n'!roll 4d6 +7' rolls a d6 4 times and adds +7 to the overall result.")
 		.addField("!spells someSpell", "Queries the SRD for a spell. " + 
 				"Spell names consisting of multiple words should be space separated eg. '!spells Legend Lore'")
 		.addField("!prefix newPrefix", "Changes the command prefix to the given " +
@@ -113,7 +118,8 @@ bot.on("message", async (message) => {
 					"list of prefix restrictions, or '!prefix reset' to reset " +
 					"the prefix to default.");
 				
-		return message.channel.send(commandsEmbed);
+		return message.channel.send(commandsEmbed);*/
+		return message.channel.send(commandsCommand());
 	}
 
 	if(cmd === `${prefix}roll`){

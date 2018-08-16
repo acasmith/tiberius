@@ -54,7 +54,8 @@ function formatResponse(values, rollArgs){
 	
 	if(values.rolled){
 		if(values.rolled.length < 2){
-			response  = values[0] === 20 ? "NATURAL 20!" : values.rolled[0];
+			response  = values.rolled[0] === 20 ? "NATURAL 20!" : values.total;
+			response += values.rolled[0] === 20 && rollArgs[2] != 0 ? " With modifier: " + values.total : "";
 		}
 		else{
 			const rolled = values.rolled.reduce((acc, element) => (acc + ", " + element));
@@ -110,6 +111,6 @@ function roll(message, messageArray){
 	return formatResponse(values, rollArgs, Discord);
 }
 
-module.exports.getParams = getParams;	//Exponsed for testing
+module.exports.getParams = getParams;	//Exposed for testing
 module.exports.idParams = idParams;		//Exposed for testing
 module.exports.roll = roll;
