@@ -54,8 +54,9 @@ function formatResponse(values, rollArgs){
 	
 	if(values.rolled){
 		if(values.rolled.length < 2){
-			response  = values.rolled[0] === 20 ? "NATURAL 20!" : values.total;
-			response += values.rolled[0] === 20 && rollArgs[2] != 0 ? " With modifier: " + values.total : "";
+			response = values.userHandle + " rolled a ";
+			response  += values.rolled[0] === 20 ? "NATURAL 20!" : values.rolled[0] + ".";
+			response += rollArgs[2] != 0 ? " With modifier: " + values.total + "." : "";
 		}
 		else{
 			const rolled = values.rolled.reduce((acc, element) => (acc + ", " + element));
@@ -108,7 +109,7 @@ function roll(message, messageArray){
 		values.userHandle = message.member.nickname || message.member.user.username;
 	}
 	
-	return formatResponse(values, rollArgs, Discord);
+	return message.channel.send(formatResponse(values, rollArgs));
 }
 
 module.exports.getParams = getParams;	//Exposed for testing
