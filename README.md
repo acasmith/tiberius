@@ -2,7 +2,7 @@
 Discord bot for querying the D&amp;D 5e SRD.
 
 ## Installing the bot on your server.
-### Important: you must own the server to install a bot.
+### Important: To install a bot, you must have the 'Manage Server' permission for that server.
 Currently, there is no external hosting. To use this bot you must host the bot 
 yourself using the following steps. 
 
@@ -33,9 +33,10 @@ directory and enter:
 npm install
 ```
 
-Now we need your bot's token. Copy the token from the developer dashboard, and 
-open botconfig.json from the project files. Set the value of "token" to your 
-bots token. Make sure to wrap the value in "" quotes.
+Within the project directory, rename example-botconfig.json to botconfig.json 
+and open it in a text editor like notepad. Now we need your bot's token. Copy 
+your bot token from the developer dashboard, and open botconfig.json. Set the 
+value of "token" to your bots token. Make sure to wrap the token in "" quotes.
 
 To run the project, enter:
 ```
