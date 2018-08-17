@@ -16,7 +16,7 @@ function prefix(message, messageArray){
 					botConfig.prefix = messageArray[1];
 					response = "Prefix changed to " + botConfig.prefix;
 
-				}
+			}
 		} else{
 			response = "Only the server owner can change the prefix.";
 		}
