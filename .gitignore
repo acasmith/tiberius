@@ -74,3 +74,6 @@ typings/
 
 #Client config file
 botconfig.json
+
+#Unit tests
+unit-tests
